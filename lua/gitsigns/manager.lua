@@ -446,6 +446,7 @@ M.update = throttle_async({ hash = 1, schedule = true }, function(bufnr)
       apply_win_signs(bufnr, vim.fn.line('w0'), vim.fn.line('w$'), true)
 
       update_show_deleted(bufnr, bcache.hunks)
+      require('gitsigns.actions.inline_preview').apply(bufnr, bcache.hunks)
       bcache.force_next_update = false
 
       local summary = Hunks.get_summary(bcache.hunks)
@@ -513,7 +514,7 @@ function M.setup()
     end,
   })
 
-  Config.subscribe({ 'signcolumn', 'numhl', 'linehl', 'show_deleted' }, function()
+  Config.subscribe({ 'signcolumn', 'numhl', 'linehl', 'show_deleted', 'inline_preview' }, function()
     -- Remove all signs
     M.reset_signs()
 

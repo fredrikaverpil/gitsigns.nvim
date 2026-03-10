@@ -196,6 +196,44 @@ function M.toggle_deleted(value)
   return config.show_deleted
 end
 
+--- Toggle inline preview of all hunks in the buffer. When enabled, added
+--- lines are highlighted and deleted lines are shown as virtual lines with
+--- word-level diff highlights.
+---
+--- @param value boolean|nil Value to set toggle. If `nil`
+---     the toggle value is inverted.
+--- @param global boolean|nil When `true`, toggle for all buffers via
+---     [[gitsigns-config-inline_preview]]. When `false` or `nil`,
+---     toggle only the current buffer.
+--- @return boolean : Current value of the toggle
+function M.toggle_inline_preview(value, global)
+  if global then
+    if value ~= nil then
+      config.inline_preview = value
+    else
+      config.inline_preview = not config.inline_preview
+    end
+    return config.inline_preview
+  end
+
+  local bufnr = current_buf()
+  local bcache = cache[bufnr]
+  if not bcache then
+    return false
+  end
+
+  if value ~= nil then
+    bcache.inline_preview = value
+  else
+    local ip = require('gitsigns.actions.inline_preview')
+    bcache.inline_preview = not ip.is_enabled(bufnr)
+  end
+
+  local ip = require('gitsigns.actions.inline_preview')
+  ip.apply(bufnr, bcache.hunks)
+  return ip.is_enabled(bufnr)
+end
+
 --- @async
 --- @param bufnr integer
 local function update(bufnr)
@@ -989,6 +1027,10 @@ do
       f(args[1])
     end
   end
+end
+
+C.toggle_inline_preview = function(args)
+  M.toggle_inline_preview(args[1], args.global or args[2])
 end
 
 --- Refresh all buffers.

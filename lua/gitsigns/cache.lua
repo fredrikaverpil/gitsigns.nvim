@@ -35,6 +35,7 @@ local M = {
 --- @field git_obj            Gitsigns.GitObj
 --- @field blame?             Gitsigns.CacheEntry.Blame
 --- @field commits?           table<string,Gitsigns.CommitInfo?>
+--- @field inline_preview? boolean
 local CacheEntry = M.CacheEntry
 
 --- @param rev? string

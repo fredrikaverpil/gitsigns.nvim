@@ -68,6 +68,7 @@
 --- @field linehl boolean
 --- @field culhl boolean
 --- @field show_deleted boolean
+--- @field inline_preview boolean
 --- @field sign_priority integer
 --- @field _on_attach_pre? fun(bufnr: integer, callback: fun(_: table))
 --- @field on_attach? fun(bufnr: integer): boolean?
@@ -437,6 +438,21 @@ M.schema = {
       Show the old version of hunks inline in the buffer (via virtual lines).
 
       Note: Virtual lines currently use the highlight `GitSignsDeleteVirtLn`.
+    ]],
+  },
+
+  inline_preview = {
+    type = 'boolean',
+    default = false,
+    description = [[
+      Show inline diff for all hunks in the buffer.
+
+      Added lines are highlighted with `GitSignsAddPreview` and word-level
+      changes use `GitSignsAddInline`, `GitSignsChangeInline` and
+      `GitSignsDeleteInline`.
+
+      Deleted lines are shown as virtual lines using `GitSignsDeleteVirtLn`
+      with word-level changes highlighted using `GitSignsDeleteVirtLnInline`.
     ]],
   },
 
