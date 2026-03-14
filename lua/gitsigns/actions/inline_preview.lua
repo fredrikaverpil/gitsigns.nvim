@@ -30,12 +30,13 @@ end
 --- @param hunk Gitsigns.Hunk.Hunk
 local function show_added(bufnr, hunk)
   local start_row = hunk.added.start - 1
+  local line_hl = hunk.type == 'add' and 'GitSignsAddLn' or 'GitSignsAddPreview'
 
   for offset = 0, hunk.added.count - 1 do
     local row = start_row + offset
     api.nvim_buf_set_extmark(bufnr, ns, row, 0, {
       end_row = row + 1,
-      hl_group = 'GitSignsAddPreview',
+      hl_group = line_hl,
       hl_eol = true,
       priority = 1000,
     })
