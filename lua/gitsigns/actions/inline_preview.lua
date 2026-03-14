@@ -74,7 +74,7 @@ local function show_deleted(bufnr, hunk)
 
     local regions = require('gitsigns.diff_int').run_word_diff(
       { hunk.removed.lines[i] },
-      { hunk.added.lines[i] }
+      { hunk.added.lines[i] or '' }
     )
 
     for _, region in ipairs(regions) do
